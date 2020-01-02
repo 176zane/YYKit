@@ -12,13 +12,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 #pragma mark Simple Object Example
 
-@interface YYBook : NSObject
+//@protocol MyProtocol <NSObject>
+//@property (nonatomic,strong) NSString *myImage;
+//@end
+
+@interface YYBook : NSObject  
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) uint64_t pages;
 @property (nonatomic, strong) NSDate *publishDate;
+//@property (nonatomic, strong) id<NSObject> pros;
 @end
 
 @implementation YYBook
+//@synthesize myImage;
 @end
 
 static void SimpleObjectExample() {
@@ -28,6 +34,7 @@ static void SimpleObjectExample() {
        \"pages\": 512,                          \
        \"publishDate\": \"2010-01-01\"          \
     }"];
+    
     NSString *bookJSON = [book modelToJSONString];
     NSLog(@"Book: %@", bookJSON);
 }

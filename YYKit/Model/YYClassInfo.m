@@ -149,7 +149,8 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
 @end
 
 @implementation YYClassPropertyInfo
-
+//https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html
+//https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html
 - (instancetype)initWithProperty:(objc_property_t)property {
     if (!property) return nil;
     self = [super init];
@@ -176,8 +177,9 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
                         NSString *clsName = nil;
                         if ([scanner scanUpToCharactersFromSet: [NSCharacterSet characterSetWithCharactersInString:@"\"<"] intoString:&clsName]) {
                             if (clsName.length) _cls = objc_getClass(clsName.UTF8String);
+                            //NSLog(@"clsName:%@",clsName);
                         }
-                        
+                        //属性所遵守的协议，可以遵循多个协议
                         NSMutableArray *protocols = nil;
                         while ([scanner scanString:@"<" intoString:NULL]) {
                             NSString* protocol = nil;
@@ -189,6 +191,7 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
                             }
                             [scanner scanString:@">" intoString:NULL];
                         }
+                        NSLog(@"_protocols:%@",protocols);
                         _protocols = protocols;
                     }
                 }
@@ -277,6 +280,7 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
     
     Class cls = self.cls;
     unsigned int methodCount = 0;
+    //获取实例方法列表的数组，不包括继承自父类的实例方法
     Method *methods = class_copyMethodList(cls, &methodCount);
     if (methods) {
         NSMutableDictionary *methodInfos = [NSMutableDictionary new];
@@ -288,6 +292,7 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
         free(methods);
     }
     unsigned int propertyCount = 0;
+    //protocol_copyPropertyList 用于得到协议中声明的属性 下面方法中是不是没有得到协议声明的属性？ 经测试可以获取到协议中声明的属性
     objc_property_t *properties = class_copyPropertyList(cls, &propertyCount);
     if (properties) {
         NSMutableDictionary *propertyInfos = [NSMutableDictionary new];
@@ -296,6 +301,7 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
             YYClassPropertyInfo *info = [[YYClassPropertyInfo alloc] initWithProperty:properties[i]];
             if (info.name) propertyInfos[info.name] = info;
         }
+        //NSLog(@"%@",propertyInfos);
         free(properties);
     }
     
@@ -328,6 +334,7 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding) {
 
 + (instancetype)classInfoWithClass:(Class)cls {
     if (!cls) return nil;
+    //分别缓存类与元类
     static CFMutableDictionaryRef classCache;
     static CFMutableDictionaryRef metaCache;
     static dispatch_once_t onceToken;
