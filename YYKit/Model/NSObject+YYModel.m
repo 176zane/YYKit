@@ -35,6 +35,7 @@ typedef NS_ENUM (NSUInteger, YYEncodingNSType) {
     YYEncodingTypeNSMutableSet,
 };
 
+//使用纯 C 函数可以避免 ObjC 的消息发送带来的开销。如果 C 函数比较小，使用 inline 可以避免一部分压栈弹栈等函数调用的开销。
 /// Get the Foundation class type from property info.
 static force_inline YYEncodingNSType YYClassGetNSType(Class cls) {
     if (!cls) return YYEncodingTypeNSUnknown;
@@ -637,6 +638,7 @@ static force_inline id YYValueForMultiKeys(__unsafe_unretained NSDictionary *dic
 + (instancetype)metaWithClass:(Class)cls {
     if (!cls) return nil;
     //？为啥用 CFMutableDictionaryRef 做缓存
+    //Model JSON 转换过程中需要很多类的元数据，此处将其全部缓存到内存中。
     static CFMutableDictionaryRef cache;
     static dispatch_once_t onceToken;
     static dispatch_semaphore_t lock;
@@ -1506,6 +1508,7 @@ static NSString *ModelDescription(NSObject *model) {
     if (modelMeta->_keyMappedCount >= CFDictionaryGetCount((CFDictionaryRef)dic)) {
         CFDictionaryApplyFunction((CFDictionaryRef)dic, ModelSetWithDictionaryFunction, &context);
         if (modelMeta->_keyPathPropertyMetas) {
+            //相对于 Foundation 的方法来说，CoreFoundation 的方法有更高的性能，用 CFArrayApplyFunction() 和 CFDictionaryApplyFunction() 方法来遍历容器类能带来不少性能提升，但代码写起来会非常麻烦。
             CFArrayApplyFunction((CFArrayRef)modelMeta->_keyPathPropertyMetas,
                                  CFRangeMake(0, CFArrayGetCount((CFArrayRef)modelMeta->_keyPathPropertyMetas)),
                                  ModelSetWithPropertyMetaArrayFunction,
