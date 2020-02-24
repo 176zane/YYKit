@@ -80,6 +80,7 @@ YYEncodingType YYEncodingGetType(const char *typeEncoding);
  Instance variable information.
  */
 @interface YYClassIvarInfo : NSObject
+//runtime层的数据结构 不归引用计数管理
 @property (nonatomic, assign, readonly) Ivar ivar;              ///< ivar opaque struct
 @property (nonatomic, strong, readonly) NSString *name;         ///< Ivar's name
 @property (nonatomic, assign, readonly) ptrdiff_t offset;       ///< Ivar's offset
