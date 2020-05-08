@@ -885,6 +885,7 @@ CGImageRef YYCGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decodeForDisplay
         bitmapInfo |= hasAlpha ? kCGImageAlphaPremultipliedFirst : kCGImageAlphaNoneSkipFirst;
         CGContextRef context = CGBitmapContextCreate(NULL, width, height, 8, 0, YYCGColorSpaceGetDeviceRGB(), bitmapInfo);
         if (!context) return NULL;
+        //通过将图片绘制到画布上解压缩
         CGContextDrawImage(context, CGRectMake(0, 0, width, height), imageRef); // decode
         CGImageRef newImage = CGBitmapContextCreateImage(context);
         CFRelease(context);
@@ -900,6 +901,7 @@ CGImageRef YYCGImageCreateDecodedCopy(CGImageRef imageRef, BOOL decodeForDisplay
         
         CGDataProviderRef dataProvider = CGImageGetDataProvider(imageRef);
         if (!dataProvider) return NULL;
+        //不通过绘制解压缩
         CFDataRef data = CGDataProviderCopyData(dataProvider); // decode
         if (!data) return NULL;
         

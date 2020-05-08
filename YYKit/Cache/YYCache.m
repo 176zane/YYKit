@@ -49,11 +49,11 @@
 + (instancetype)cacheWithPath:(NSString *)path {
     return [[self alloc] initWithPath:path];
 }
-
+//可能会阻塞线程
 - (BOOL)containsObjectForKey:(NSString *)key {
     return [_memoryCache containsObjectForKey:key] || [_diskCache containsObjectForKey:key];
 }
-
+//带block的方法会立刻返回，并在读取结束后在后台线程回调block
 - (void)containsObjectForKey:(NSString *)key withBlock:(void (^)(NSString *key, BOOL contains))block {
     if (!block) return;
     

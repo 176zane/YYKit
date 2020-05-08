@@ -120,7 +120,7 @@ static dispatch_queue_t YYAsyncLayerGetReleaseQueue() {
         if (task.willDisplay) task.willDisplay(self);
         YYSentinel *sentinel = _sentinel;
         int32_t value = sentinel.value;
-        BOOL (^isCancelled)() = ^BOOL() {
+        BOOL (^isCancelled)(void) = ^BOOL() {
             return value != sentinel.value;
         };
         CGSize size = self.bounds.size;
@@ -163,7 +163,7 @@ static dispatch_queue_t YYAsyncLayerGetReleaseQueue() {
                 CGColorRelease(backgroundColor);
             }
             task.display(context, size, isCancelled);
-            if (isCancelled()) {
+            if (isCancelled()) {//结束无用的绘制
                 UIGraphicsEndImageContext();
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (task.didDisplay) task.didDisplay(self, NO);
@@ -182,7 +182,7 @@ static dispatch_queue_t YYAsyncLayerGetReleaseQueue() {
                 if (isCancelled()) {
                     if (task.didDisplay) task.didDisplay(self, NO);
                 } else {
-                    self.contents = (__bridge id)(image.CGImage);
+                    self.contents = (__bridge id)(image.CGImage);//将绘制的图片赋值给layer的寄宿图
                     if (task.didDisplay) task.didDisplay(self, YES);
                 }
             });
