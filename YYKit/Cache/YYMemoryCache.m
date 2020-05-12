@@ -222,7 +222,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
         if (pthread_mutex_trylock(&_lock) == 0) {
             if (_lru->_totalCost > costLimit) {
                 _YYLinkedMapNode *node = [_lru removeTailNode];
-                if (node) [holder addObject:node];
+                if (node) [holder addObject:node];//添加进数组，数组持有对象
             } else {
                 finish = YES;
             }
@@ -235,6 +235,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
         dispatch_queue_t queue = _lru->_releaseOnMainThread ? dispatch_get_main_queue() : YYMemoryCacheGetReleaseQueue();
         dispatch_async(queue, ^{
             [holder count]; // release in queue
+            //在block执行完后释放对象，达到在特定线程释放对象的目的
         });
     }
 }
@@ -307,7 +308,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
         });
     }
 }
-
+//app进入后台后或收到内存警告时，清理内存缓存
 - (void)_appDidReceiveMemoryWarningNotification {
     if (self.didReceiveMemoryWarningBlock) {
         self.didReceiveMemoryWarningBlock(self);
@@ -332,12 +333,13 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
     self = super.init;
     pthread_mutex_init(&_lock, NULL);
     _lru = [_YYLinkedMap new];
+    //串行队列
     _queue = dispatch_queue_create("com.ibireme.cache.memory", DISPATCH_QUEUE_SERIAL);
     
     _countLimit = NSUIntegerMax;
     _costLimit = NSUIntegerMax;
     _ageLimit = DBL_MAX;
-    _autoTrimInterval = 5.0;
+    _autoTrimInterval = 5.0;//每隔5秒检查是否需要减持
     _shouldRemoveAllObjectsOnMemoryWarning = YES;
     _shouldRemoveAllObjectsWhenEnteringBackground = YES;
     

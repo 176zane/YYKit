@@ -52,7 +52,8 @@ static NSString *const kTrashDirectoryName = @"trash";
     last_access_time    integer,
     extended_data       blob,
     primary key(key)
- ); 
+ );
+ //创建索引
  create index if not exists last_access_time_idx on manifest(last_access_time);
  */
 
@@ -60,7 +61,7 @@ static NSString *const kTrashDirectoryName = @"trash";
 @end
 
 @implementation YYKVStorage {
-    dispatch_queue_t _trashQueue;
+    dispatch_queue_t _trashQueue;//串行队列
     
     NSString *_path;
     NSString *_dbPath;
@@ -146,6 +147,7 @@ static NSString *const kTrashDirectoryName = @"trash";
 }
 
 - (BOOL)_dbInitialize {
+    //WAL日志模式下，纯写性能要远远好于DELETE模式
     NSString *sql = @"pragma journal_mode = wal; pragma synchronous = normal; create table if not exists manifest (key text, filename text, size integer, inline_data blob, modification_time integer, last_access_time integer, extended_data blob, primary key(key)); create index if not exists last_access_time_idx on manifest(last_access_time);";
     return [self _dbExecute:sql];
 }
@@ -174,6 +176,7 @@ static NSString *const kTrashDirectoryName = @"trash";
     if (![self _dbCheck] || sql.length == 0 || !_dbStmtCache) return NULL;
     sqlite3_stmt *stmt = (sqlite3_stmt *)CFDictionaryGetValue(_dbStmtCache, (__bridge const void *)(sql));
     if (!stmt) {
+        //将一个SQL命令字符串转换成一条prepared语句，存储在sqlite3_stmt类型结构体中。
         int result = sqlite3_prepare_v2(_db, sql.UTF8String, -1, &stmt, NULL);
         if (result != SQLITE_OK) {
             if (_errorLogsEnabled) NSLog(@"%s line:%d sqlite stmt prepare error (%d): %s", __FUNCTION__, __LINE__, result, sqlite3_errmsg(_db));
@@ -210,7 +213,7 @@ static NSString *const kTrashDirectoryName = @"trash";
     if (!stmt) return NO;
     
     int timestamp = (int)time(NULL);
-    sqlite3_bind_text(stmt, 1, key.UTF8String, -1, NULL);
+    sqlite3_bind_text(stmt, 1, key.UTF8String, -1, NULL);//调用sqlite3_bind_xxx函数给预处理好的语句绑定参数
     sqlite3_bind_text(stmt, 2, fileName.UTF8String, -1, NULL);
     sqlite3_bind_int(stmt, 3, (int)value.length);
     if (fileName.length == 0) {
@@ -221,7 +224,7 @@ static NSString *const kTrashDirectoryName = @"trash";
     sqlite3_bind_int(stmt, 5, timestamp);
     sqlite3_bind_int(stmt, 6, timestamp);
     sqlite3_bind_blob(stmt, 7, extendedData.bytes, (int)extendedData.length, 0);
-    
+    //sqlite3_step函数执行之前预处理好的语句
     int result = sqlite3_step(stmt);
     if (result != SQLITE_DONE) {
         if (_errorLogsEnabled) NSLog(@"%s line:%d sqlite insert error (%d): %s", __FUNCTION__, __LINE__, result, sqlite3_errmsg(_db));
@@ -725,29 +728,31 @@ static NSString *const kTrashDirectoryName = @"trash";
 - (BOOL)saveItemWithKey:(NSString *)key value:(NSData *)value {
     return [self saveItemWithKey:key value:value filename:nil extendedData:nil];
 }
-
+//只有filename参数不为空才会写入文件系统
 - (BOOL)saveItemWithKey:(NSString *)key value:(NSData *)value filename:(NSString *)filename extendedData:(NSData *)extendedData {
     if (key.length == 0 || value.length == 0) return NO;
     if (_type == YYKVStorageTypeFile && filename.length == 0) {
         return NO;
     }
     
-    if (filename.length) {
+    if (filename.length) {//有文件名则将value写入文件
         if (![self _fileWriteWithName:filename data:value]) {
             return NO;
         }
+        //将相关信息存入数据库中，value只用到value.size
         if (![self _dbSaveWithKey:key value:value fileName:filename extendedData:extendedData]) {
             [self _fileDeleteWithName:filename];
             return NO;
         }
         return YES;
     } else {
-        if (_type != YYKVStorageTypeSQLite) {
+        if (_type != YYKVStorageTypeSQLite) {//类型不是只在数据库中存储
             NSString *filename = [self _dbGetFilenameWithKey:key];
-            if (filename) {
+            if (filename) {//如果从数据库中取出key对应的文件名，则删除文件
                 [self _fileDeleteWithName:filename];
             }
         }
+        //将数据存及相关信息入数据库中
         return [self _dbSaveWithKey:key value:value fileName:nil extendedData:extendedData];
     }
 }

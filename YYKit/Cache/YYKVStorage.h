@@ -73,6 +73,7 @@ typedef NS_ENUM(NSUInteger, YYKVStorageType) {
  need to process large amounts of data in multi-thread, you should split the data
  to multiple KVStorage instance (sharding).
  */
+//该类的实例线程不安全
 @interface YYKVStorage : NSObject
 
 #pragma mark - Attribute

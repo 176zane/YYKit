@@ -33,6 +33,7 @@ static int64_t _YYDiskSpaceFree() {
 
 
 /// weak reference for all instances
+//全局的缓存MapTable 强引用键 弱引用值
 static NSMapTable *_globalInstances;
 static dispatch_semaphore_t _globalInstancesLock;
 
@@ -194,7 +195,7 @@ static void _YYDiskCacheSetGlobal(YYDiskCache *cache) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_appWillBeTerminated) name:UIApplicationWillTerminateNotification object:nil];
     return self;
 }
-
+//几乎所有数据访问都加锁了
 - (BOOL)containsObjectForKey:(NSString *)key {
     if (!key) return NO;
     Lock();
