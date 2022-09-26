@@ -270,7 +270,7 @@ static void _YYDiskCacheSetGlobal(YYDiskCache *cache) {
     if (!value) return;
     NSString *filename = nil;
     if (_kv.type != YYKVStorageTypeSQLite) {
-        if (value.length > _inlineThreshold) {
+        if (value.length > _inlineThreshold) {//数据大小大于_inlineThreshold时，data写入文件
             filename = [self _filenameForKey:key];
         }
     }
