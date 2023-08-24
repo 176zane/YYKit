@@ -10,7 +10,7 @@
 #import "YYKit.h"
 #import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "YYBPGCoder.h"
+//#import "YYBPGCoder.h"
 
 /*
  Enable this value and run in simulator, the image will write to desktop.
@@ -371,50 +371,50 @@
     printf("------------------------------------------\n\n");
 }
 
-- (void)runBPGBenchmark {
-    printf("==========================================\n");
-    printf("BPG Decode Benchmark\n");
-    printf("name    size  quality length decode_time\n");
-    
-    for (NSString *imageName in self.imageNames) {
-        for (NSNumber *imageSize in self.imageSizes) {
-            for (NSString *quality in @[ @"lossless",@"q0",@"q5",@"q10",@"q15",@"q20",@"q25",@"q30",@"q35",@"q40",@"q45",@"q50"]) {
-                @autoreleasepool {
-                    NSString *fileName = [NSString stringWithFormat:@"%@%@_%@",imageName, imageSize, quality];
-                    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"bpg"];
-                    NSData *data = filePath ? [NSData dataWithContentsOfFile:filePath] : nil;
-                    if (!data) continue;
-                    int count = 100;
-                    YYBenchmark(^{
-                        for (int i = 0; i < count; i++) {
-                            CGImageRef image = YYCGImageCreateWithBPGData((__bridge CFDataRef)data, YES);
-                            CFRelease(image);
-                        }
-                    }, ^(double ms) {
-                        printf("%8s %3d %8s %6d %2.3f\n", imageName.UTF8String, imageSize.intValue, quality.UTF8String, (int)data.length, ms / count);
-                    });
-                    
-                    
-#if ENABLE_OUTPUT
-                    if ([UIDevice currentDevice].isSimulator) {
-                        NSString *outFilePath = [NSString stringWithFormat:@"%@%@.bpg", IMAGE_OUTPUT_DIR,fileName];
-                        [data writeToFile:outFilePath atomically:YES];
-                        
-                        CGImageRef image = YYCGImageCreateWithBPGData((__bridge CFDataRef)data, YES);
-                        NSData *pngData = UIImagePNGRepresentation([UIImage imageWithCGImage:image]);
-                        CFRelease(image);
-                        NSString *pngOutFilePath = [NSString stringWithFormat:@"%@%@.bpg.png", IMAGE_OUTPUT_DIR,fileName];
-                        [pngData writeToFile:pngOutFilePath atomically:YES];
-                    }
-#endif
-                    
-                }
-            }
-        }
-    }
-    
-    printf("------------------------------------------\n\n");
-}
+//- (void)runBPGBenchmark {
+//    printf("==========================================\n");
+//    printf("BPG Decode Benchmark\n");
+//    printf("name    size  quality length decode_time\n");
+//
+//    for (NSString *imageName in self.imageNames) {
+//        for (NSNumber *imageSize in self.imageSizes) {
+//            for (NSString *quality in @[ @"lossless",@"q0",@"q5",@"q10",@"q15",@"q20",@"q25",@"q30",@"q35",@"q40",@"q45",@"q50"]) {
+//                @autoreleasepool {
+//                    NSString *fileName = [NSString stringWithFormat:@"%@%@_%@",imageName, imageSize, quality];
+//                    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"bpg"];
+//                    NSData *data = filePath ? [NSData dataWithContentsOfFile:filePath] : nil;
+//                    if (!data) continue;
+//                    int count = 100;
+//                    YYBenchmark(^{
+//                        for (int i = 0; i < count; i++) {
+//                            CGImageRef image = YYCGImageCreateWithBPGData((__bridge CFDataRef)data, YES);
+//                            CFRelease(image);
+//                        }
+//                    }, ^(double ms) {
+//                        printf("%8s %3d %8s %6d %2.3f\n", imageName.UTF8String, imageSize.intValue, quality.UTF8String, (int)data.length, ms / count);
+//                    });
+//
+//
+//#if ENABLE_OUTPUT
+//                    if ([UIDevice currentDevice].isSimulator) {
+//                        NSString *outFilePath = [NSString stringWithFormat:@"%@%@.bpg", IMAGE_OUTPUT_DIR,fileName];
+//                        [data writeToFile:outFilePath atomically:YES];
+//
+//                        CGImageRef image = YYCGImageCreateWithBPGData((__bridge CFDataRef)data, YES);
+//                        NSData *pngData = UIImagePNGRepresentation([UIImage imageWithCGImage:image]);
+//                        CFRelease(image);
+//                        NSString *pngOutFilePath = [NSString stringWithFormat:@"%@%@.bpg.png", IMAGE_OUTPUT_DIR,fileName];
+//                        [pngData writeToFile:pngOutFilePath atomically:YES];
+//                    }
+//#endif
+//
+//                }
+//            }
+//        }
+//    }
+//
+//    printf("------------------------------------------\n\n");
+//}
 
 - (void)runAnimatedImageBenchmark {
     printf("==========================================\n");
@@ -533,31 +533,31 @@
         }
     };
     
-    /// Cover: webp
-    CoverDecodeBlock webpCoverDecoder = ^(NSData *data) {
-        CGImageRef image = YYCGImageCreateWithWebPData((__bridge CFDataRef)data, YES, NO, NO, NO);
-        CFRelease(image);
-    };
+//    /// Cover: webp
+//    CoverDecodeBlock webpCoverDecoder = ^(NSData *data) {
+//        CGImageRef image = YYCGImageCreateWithWebPData((__bridge CFDataRef)data, YES, NO, NO, NO);
+//        CFRelease(image);
+//    };
     
     /// Cover: bpg
-    CoverDecodeBlock bpgCoverDecoder = ^(NSData *data) {
-        CGImageRef image = YYCGImageCreateWithBPGData((__bridge CFDataRef)data, YES);
-        CFRelease(image);
-    };
+//    CoverDecodeBlock bpgCoverDecoder = ^(NSData *data) {
+//        CGImageRef image = YYCGImageCreateWithBPGData((__bridge CFDataRef)data, YES);
+//        CFRelease(image);
+//    };
     
     NSArray *coverSrcs = @[@"gif       imageio", gif, imageioCoverDecoder,
                            @"gif     yydecoder", gif, yyCoverDecoder,
                            @"apng      imageio", apng, imageioCoverDecoder,
                            @"apng    yydecoder", apng, yyCoverDecoder,
-                           @"webp_85   yyimage", webp_q85, webpCoverDecoder,
-                           @"webp_85 yydecocer", webp_q85, yyCoverDecoder,
-                           @"webp_90   yyimage", webp_q90, webpCoverDecoder,
-                           @"webp_90 yydecocer", webp_q90, yyCoverDecoder,
-                           @"webp_ll   yyimage", webp_lossless, webpCoverDecoder,
-                           @"webp_ll yydecoder", webp_lossless, yyCoverDecoder,
-                           @"bpg_20    yyimage", bpg_q20, bpgCoverDecoder,
-                           @"bpg_15    yyimage", bpg_q20, bpgCoverDecoder,
-                           @"bpg_ll    yyimage", bpg_lossless, bpgCoverDecoder,
+//                           @"webp_85   yyimage", webp_q85, webpCoverDecoder,
+//                           @"webp_85 yydecocer", webp_q85, yyCoverDecoder,
+//                           @"webp_90   yyimage", webp_q90, webpCoverDecoder,
+//                           @"webp_90 yydecocer", webp_q90, yyCoverDecoder,
+//                           @"webp_ll   yyimage", webp_lossless, webpCoverDecoder,
+//                           @"webp_ll yydecoder", webp_lossless, yyCoverDecoder,
+//                           @"bpg_20    yyimage", bpg_q20, bpgCoverDecoder,
+//                           @"bpg_15    yyimage", bpg_q20, bpgCoverDecoder,
+//                           @"bpg_ll    yyimage", bpg_lossless, bpgCoverDecoder,
                            ];
     
     
@@ -692,12 +692,12 @@
         }
     };
     
-    /// All: bpg
-    AllFrameDecodeBlock bpgAllFrameDecoder = ^(NSData *data, BOOL reverseOrder){
-        @autoreleasepool {
-            YYCGImageDecodeAllFrameInBPGData((__bridge CFDataRef)data, YES);
-        }
-    };
+//    /// All: bpg
+//    AllFrameDecodeBlock bpgAllFrameDecoder = ^(NSData *data, BOOL reverseOrder){
+//        @autoreleasepool {
+//            YYCGImageDecodeAllFrameInBPGData((__bridge CFDataRef)data, YES);
+//        }
+//    };
     
     NSArray *allSrcs = @[@"gif       imageio", gif, imageioAllFrameDecoder,
                          @"gif     yydecoder", gif, yyAllFrameDecoder,
@@ -706,9 +706,9 @@
                          @"webp_85 yydecocer", webp_q85, yyAllFrameDecoder,
                          @"webp_90 yydecocer", webp_q90, yyAllFrameDecoder,
                          @"webp_ll yydecoder", webp_lossless, yyAllFrameDecoder,
-                         @"bpg_20    yyimage", bpg_q20, bpgAllFrameDecoder,
-                         @"bpg_15    yyimage", bpg_q20, bpgAllFrameDecoder,
-                         @"bpg_ll    yyimage", bpg_lossless, bpgAllFrameDecoder,
+//                         @"bpg_20    yyimage", bpg_q20, bpgAllFrameDecoder,
+//                         @"bpg_15    yyimage", bpg_q20, bpgAllFrameDecoder,
+//                         @"bpg_ll    yyimage", bpg_lossless, bpgAllFrameDecoder,
                          ];
     
     

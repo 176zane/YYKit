@@ -26,3 +26,4 @@ Pod::Spec.new do |s|
   s.ios.vendored_frameworks = 'Vendor/WebP.framework'
 
 end
+

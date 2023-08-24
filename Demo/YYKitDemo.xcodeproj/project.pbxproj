@@ -40,7 +40,6 @@
 		D933C72B1B7E39EA0065CDBB /* ermilio_lossless.bpg in Resources */ = {isa = PBXBuildFile; fileRef = D933C72A1B7E39EA0065CDBB /* ermilio_lossless.bpg */; };
 		D9387D471C7CBCAF00717477 /* YYUtilityExample.m in Sources */ = {isa = PBXBuildFile; fileRef = D9387D461C7CBCAF00717477 /* YYUtilityExample.m */; };
 		D9387D4A1C7CBD7F00717477 /* YYKeychainExample.m in Sources */ = {isa = PBXBuildFile; fileRef = D9387D491C7CBD7F00717477 /* YYKeychainExample.m */; };
-		D939F5DF1B7CA2CA003EEC6A /* YYBPGCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = D939F5DE1B7CA2CA003EEC6A /* YYBPGCoder.m */; };
 		D939F5E11B7CB044003EEC6A /* dribbble64_imageio.png in Resources */ = {isa = PBXBuildFile; fileRef = D939F5E01B7CB044003EEC6A /* dribbble64_imageio.png */; };
 		D939F5E31B7CB04A003EEC6A /* dribbble128_imageio.png in Resources */ = {isa = PBXBuildFile; fileRef = D939F5E21B7CB04A003EEC6A /* dribbble128_imageio.png */; };
 		D939F5E51B7CB04D003EEC6A /* dribbble256_imageio.png in Resources */ = {isa = PBXBuildFile; fileRef = D939F5E41B7CB04D003EEC6A /* dribbble256_imageio.png */; };
@@ -94,8 +93,6 @@
 		D9971BB01B84D55A00A7B424 /* YYTextAttributeExample.m in Sources */ = {isa = PBXBuildFile; fileRef = D9971BAF1B84D55A00A7B424 /* YYTextAttributeExample.m */; };
 		D9971BB51B85023300A7B424 /* EmoticonWeibo.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D9971BB31B85023300A7B424 /* EmoticonWeibo.bundle */; };
 		D9971BB61B85023300A7B424 /* EmoticonQQ.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D9971BB41B85023300A7B424 /* EmoticonQQ.bundle */; };
-		D9B25F9D1BEE79280038C00A /* bpg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B25F9B1BEE79280038C00A /* bpg.framework */; };
-		D9B25F9E1BEE79280038C00A /* WebP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9B25F9C1BEE79280038C00A /* WebP.framework */; };
 		D9B260501BEE79370038C00A /* NSArray+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D9B25FA31BEE79370038C00A /* NSArray+YYAdd.m */; };
 		D9B260511BEE79370038C00A /* NSBundle+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D9B25FA51BEE79370038C00A /* NSBundle+YYAdd.m */; };
 		D9B260521BEE79370038C00A /* NSData+YYAdd.m in Sources */ = {isa = PBXBuildFile; fileRef = D9B25FA71BEE79370038C00A /* NSData+YYAdd.m */; };
@@ -255,8 +252,6 @@
 		D9387D461C7CBCAF00717477 /* YYUtilityExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYUtilityExample.m; sourceTree = "<group>"; };
 		D9387D481C7CBD7F00717477 /* YYKeychainExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYKeychainExample.h; sourceTree = "<group>"; };
 		D9387D491C7CBD7F00717477 /* YYKeychainExample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYKeychainExample.m; sourceTree = "<group>"; };
-		D939F5DD1B7CA2CA003EEC6A /* YYBPGCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYBPGCoder.h; sourceTree = "<group>"; };
-		D939F5DE1B7CA2CA003EEC6A /* YYBPGCoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYBPGCoder.m; sourceTree = "<group>"; };
 		D939F5E01B7CB044003EEC6A /* dribbble64_imageio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dribbble64_imageio.png; sourceTree = "<group>"; };
 		D939F5E21B7CB04A003EEC6A /* dribbble128_imageio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dribbble128_imageio.png; sourceTree = "<group>"; };
 		D939F5E41B7CB04D003EEC6A /* dribbble256_imageio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dribbble256_imageio.png; sourceTree = "<group>"; };
@@ -520,8 +515,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9B25F9E1BEE79280038C00A /* WebP.framework in Frameworks */,
-				D9B25F9D1BEE79280038C00A /* bpg.framework in Frameworks */,
 				D9700D9E1BC7D44B00F878A4 /* libsqlite3.tbd in Frameworks */,
 				D9700D9C1BC7D44500F878A4 /* libz.tbd in Frameworks */,
 				D974851619CAB38900F46DE1 /* UIKit.framework in Frameworks */,
@@ -607,8 +600,6 @@
 				D90F521E1B78537600C9B465 /* YYImageBenchmark.m */,
 				D91A99701B5D2B4800EF3A3E /* YYImageExampleHelper.h */,
 				D91A99711B5D2B4800EF3A3E /* YYImageExampleHelper.m */,
-				D939F5DD1B7CA2CA003EEC6A /* YYBPGCoder.h */,
-				D939F5DE1B7CA2CA003EEC6A /* YYBPGCoder.m */,
 			);
 			name = Image;
 			sourceTree = "<group>";
@@ -1345,7 +1336,6 @@
 				D9B2605D1BEE79370038C00A /* NSTimer+YYAdd.m in Sources */,
 				D9B260701BEE79370038C00A /* YYKVStorage.m in Sources */,
 				D9700CC91BC680A000F878A4 /* YYPhotoGroupView.m in Sources */,
-				D939F5DF1B7CA2CA003EEC6A /* YYBPGCoder.m in Sources */,
 				D9237BCF1BC2E0A80092A558 /* WBEmoticonInputView.m in Sources */,
 				D9B260721BEE79370038C00A /* _YYWebImageSetter.m in Sources */,
 				D9B260751BEE79370038C00A /* UIButton+YYWebImage.m in Sources */,
@@ -1493,13 +1483,14 @@
 					"$(PROJECT_DIR)/**",
 				);
 				INFOPLIST_FILE = YYKitDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ibireme.YYKitDemo";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibireme.YYKitDemo;
 				PRODUCT_NAME = YYKitDemo;
 				STRIP_PNG_TEXT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1521,13 +1512,14 @@
 					"$(PROJECT_DIR)/**",
 				);
 				INFOPLIST_FILE = YYKitDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/**",
 				);
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ibireme.YYKitDemo";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ibireme.YYKitDemo;
 				PRODUCT_NAME = YYKitDemo;
 				STRIP_PNG_TEXT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
