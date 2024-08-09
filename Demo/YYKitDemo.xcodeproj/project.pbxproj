@@ -324,7 +324,6 @@
 		D9971BB31B85023300A7B424 /* EmoticonWeibo.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EmoticonWeibo.bundle; sourceTree = "<group>"; };
 		D9971BB41B85023300A7B424 /* EmoticonQQ.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = EmoticonQQ.bundle; sourceTree = "<group>"; };
 		D9B25F9B1BEE79280038C00A /* bpg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = bpg.framework; path = ../Vendor/bpg.framework; sourceTree = "<group>"; };
-		D9B25F9C1BEE79280038C00A /* WebP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebP.framework; path = ../Vendor/WebP.framework; sourceTree = "<group>"; };
 		D9B25FA21BEE79370038C00A /* NSArray+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+YYAdd.h"; sourceTree = "<group>"; };
 		D9B25FA31BEE79370038C00A /* NSArray+YYAdd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+YYAdd.m"; sourceTree = "<group>"; };
 		D9B25FA41BEE79370038C00A /* NSBundle+YYAdd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+YYAdd.h"; sourceTree = "<group>"; };
@@ -814,7 +813,6 @@
 			isa = PBXGroup;
 			children = (
 				D9B25F9B1BEE79280038C00A /* bpg.framework */,
-				D9B25F9C1BEE79280038C00A /* WebP.framework */,
 				D9700D9D1BC7D44B00F878A4 /* libsqlite3.tbd */,
 				D9700D9B1BC7D44500F878A4 /* libz.tbd */,
 				D9B263B81BEF66010038C00A /* MobileCoreServices.framework */,
